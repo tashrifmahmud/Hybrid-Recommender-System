@@ -19,7 +19,7 @@ st.title(":tv: Hybrid Anime Recommendation System")
 st.markdown(":cat: [GitHub Repository](https://github.com/tashrifmahmud/Hybrid-Recommender-System)  | :sparkles: [Jikan API](https://jikan.moe/)")
 
 # Banner
-st.image("https://i.imgur.com/IhTFtPw.jpeg", use_container_width=True)
+st.image("https://i.imgur.com/IhTFtPw.jpeg", use_column_width=True)
 
 # Sidebar
 with st.sidebar:
@@ -172,7 +172,7 @@ if submit_button:
         for _, row in hybrid_recs.iterrows():
             anime_details, last_request_time = fetch_anime_details_v4(row['name'], last_request_time)
             if anime_details:
-                st.image(anime_details['image_url'], use_container_width=True)
+                st.image(anime_details['image_url'], use_column_width=False)
                 st.markdown(f"### [{anime_details['title']}]({anime_details['url']})")
                 st.markdown(f"**Score**: {anime_details['score']}")
                 st.markdown(f"**Genres**: {row['genres']}")
