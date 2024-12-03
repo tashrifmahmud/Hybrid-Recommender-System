@@ -29,10 +29,10 @@ with st.sidebar:
 
 # Github release file links
 file_urls = {
-    "anime_filtered_processed_st.csv": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/anime_filtered_processed_st.csv",
-    "cosine_sim_reduced.npy": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/cosine_sim_reduced.npy",
-    "svd_model_3.pkl": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/svd_model_3.pkl",
-    "user_clean_processed_2.csv": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/user_clean_processed_2.csv"
+    "anime_filtered": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/anime_filtered_processed_top.csv",
+    "cosine_sim": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/cosine_sim_reduced_pop.npy",
+    "svd_model": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/svd_model_3_compressed.pkl",
+    "user_clean": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/user_clean_processed_2.csv"
 }
 
 # Function to download files with error handling
@@ -52,17 +52,17 @@ st.info("Initial loading can take a few minutes, thank you for your patience.", 
 # Load all saved data with caching
 @st.cache_data
 def load_data():
-    download_file(file_urls["anime_filtered_processed_st.csv"], "anime_filtered_processed_st.csv")
-    anime_filtered_df = pd.read_csv("anime_filtered_processed_st.csv")
+    download_file(file_urls["anime_filtered"], "anime_filtered")
+    anime_filtered_df = pd.read_csv("anime_filtered")
 
-    download_file(file_urls["cosine_sim_reduced.npy"], "cosine_sim_reduced.npy")
-    cosine_sim = np.load("cosine_sim_reduced.npy")
+    download_file(file_urls["cosine_sim"], "cosine_sim")
+    cosine_sim = np.load("cosine_sim")
 
-    download_file(file_urls["svd_model_3.pkl"], "svd_model_3.pkl")
-    svd = joblib.load("svd_model_3.pkl")
+    download_file(file_urls["svd_model"], "svd_model")
+    svd = joblib.load("svd_model")
 
-    download_file(file_urls["user_clean_processed_2.csv"], "user_clean_processed_2.csv")
-    user_clean = pd.read_csv("user_clean_processed_2.csv")
+    download_file(file_urls["user_clean"], "user_clean")
+    user_clean = pd.read_csv("user_clean")
 
     return anime_filtered_df, cosine_sim, svd, user_clean
 
