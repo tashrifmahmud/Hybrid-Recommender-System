@@ -7,3 +7,4 @@ scikit-learn
 joblib
 surprise
 jikanpy
+scikit-surprise
