@@ -5,7 +5,7 @@ import joblib
 import requests
 import time
 from time import sleep
-from jikanpy import Jikan
+from jikanpy import Jikan 
 
 # Tab name and icon
 st.set_page_config(
@@ -29,18 +29,47 @@ with st.sidebar:
     st.markdown("### :space_invader: Created by: Tashrif Mahmud\n- This Anime Recommendation System combines collaborative and content-based filtering to provide personalized anime suggestions. Explore detailed recommendations with images, scores, and synopses powered by Jikan API.")
     st.markdown("### :link: Links:\n- :cat: [GitHub](https://github.com/tashrifmahmud/Hybrid-Recommender-System)\n- :e-mail: [LinkedIn](https://www.linkedin.com/in/tashrifmahmud/)") 
 
+
+
+# Github release file links
+file_urls = {
+    "anime_filtered_processed_st.csv": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/anime_filtered_processed_st.csv",
+    "cosine_sim_reduced.npy": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/cosine_sim_reduced.npy",
+    "svd_model_3.pkl": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/svd_model_3.pkl",
+    "user_clean_processed_2.csv": "https://github.com/tashrifmahmud/Hybrid-Recommender-System/releases/download/v1.0.0/user_clean_processed_2.csv"
+}
+
+# Function to download files
+def download_file(url, output_path):
+    response = requests.get(url)
+    with open(output_path, "wb") as f:
+        f.write(response.content)
+
+
 st.info("Initial loading can take a few minutes, thank you for your patience.", icon="ℹ️")
 
-# Load all saved data
+# Load all saved data with caching
 @st.cache_data
 def load_data():
-    anime_filtered_df = pd.read_csv("data/anime_filtered_processed_st.csv")
-    cosine_sim = np.load("data/cosine_sim_reduced.npy")
-    svd = joblib.load("data/svd_model_3.pkl")
-    user_clean = pd.read_csv("data/user_clean_processed_2.csv")
+    
+    # Download and load the files
+    download_file(file_urls["anime_filtered_processed_st.csv"], "anime_filtered_processed_st.csv")
+    anime_filtered_df = pd.read_csv("anime_filtered_processed_st.csv")
+
+    download_file(file_urls["cosine_sim_reduced.npy"], "cosine_sim_reduced.npy")
+    cosine_sim = np.load("cosine_sim_reduced.npy")
+
+    download_file(file_urls["svd_model_3.pkl"], "svd_model_3.pkl")
+    svd = joblib.load("svd_model_3.pkl")
+
+    download_file(file_urls["user_clean_processed_2.csv"], "user_clean_processed_2.csv")
+    user_clean = pd.read_csv("user_clean_processed_2.csv")
+    
     return anime_filtered_df, cosine_sim, svd, user_clean
 
+# Load data
 anime_filtered_df, cosine_sim, svd, user_clean = load_data()
+
 
 st.success("Data loaded successfully!", icon="✅")
 
