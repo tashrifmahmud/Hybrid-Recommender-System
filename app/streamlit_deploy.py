@@ -20,7 +20,7 @@ st.title(":tv: Hybrid Anime Recommendation System")
 st.markdown(":cat: [GitHub Repository](https://github.com/tashrifmahmud/Hybrid-Recommender-System)  | :sparkles: [Jikan API](https://jikan.moe/)")
 
 # Banner
-st.image("https://i.imgur.com/IhTFtPw.jpeg", use_column_width=True)
+st.image("https://i.imgur.com/IhTFtPw.jpeg", use_container_width=True)
 
 
 # Sidebar
