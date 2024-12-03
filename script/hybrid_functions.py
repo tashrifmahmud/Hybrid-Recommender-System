@@ -1,14 +1,3 @@
-# Example: New user ratings
-new_user_ratings = [
-    {'user_id': 0, 'anime_id': 11111, 'rating': 8},   # Anime ID 11111 with rating 8
-    {'user_id': 0, 'anime_id': 5042, 'rating': 9},  # Anime ID 5042 with rating 9
-    {'user_id': 0, 'anime_id': 11617, 'rating': 9}, # Anime ID 11617 with rating 9
-]
-
-# Convert to DataFrame and append to user_clean
-new_user_df = pd.DataFrame(new_user_ratings)
-updated_user_clean = pd.concat([user_clean, new_user_df], ignore_index=True)
-
 def get_recommendations_with_score_and_rank(anime_id, cosine_sim, df, top_n=10, popularity_threshold=10000):
     # Find index of the given anime_id
     idx = df.index[df['anime_id'] == anime_id][0]
@@ -141,26 +130,3 @@ def diversify_recommendations_by_series_keyword(df, column='name', keywords=None
                 keyword_counts[keyword_found] = keyword_counts.get(keyword_found, 0) + 1
 
     return pd.DataFrame(diversified)
-
-
-# Extract 'name' column
-anime_titles = anime_filtered_df['name']
-
-keywords = []
-for title in anime_titles:
-    # Split on spaces or punctuation
-    keywords.extend(title.lower().split())
-
-keyword_counts = Counter(keywords)
-
-# Filter to include only keywords that occur more than once
-series_keywords = [keyword for keyword, count in keyword_counts.items() if count > 3]
-
-# Diversify recommendations based on series keywords
-diversified_recs = diversify_recommendations_by_series_keyword(
-    df=hybrid_recs_new_user,
-    column='name',
-    keywords=series_keywords,
-    max_per_keyword=2 
-)
-

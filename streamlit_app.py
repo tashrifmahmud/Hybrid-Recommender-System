@@ -34,9 +34,9 @@ st.info("Initial loading can take a few minutes, thank you for your patience.", 
 # Load all saved data
 @st.cache_data
 def load_data():
-    anime_filtered_df = pd.read_csv("data/anime_filtered_processed_st.csv")
-    cosine_sim = np.load("data/cosine_sim_reduced.npy")
-    svd = joblib.load("data/svd_model_3.pkl")
+    anime_filtered_df = pd.read_csv("data/anime_filtered_processed_top.csv")
+    cosine_sim = np.load("data/cosine_sim_reduced_pop.npy")
+    svd = joblib.load("data/svd_model_3_compressed.pkl")
     user_clean = pd.read_csv("data/user_clean_processed_2.csv")
     return anime_filtered_df, cosine_sim, svd, user_clean
 

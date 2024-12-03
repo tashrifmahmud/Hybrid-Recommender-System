@@ -136,7 +136,7 @@ def get_recommendations_with_score_and_rank(anime_id, cosine_sim, df, top_n=10, 
     recommendations['rank_norm'] = 1 / (recommendations['rank'] + 1)
     recommendations['score_norm'] = recommendations['score'] / 10  
     
-    # Weighted score: Adjust weights to balance factors
+    # Weighted score
     recommendations['weighted_score'] = (
         0.4 * recommendations['similarity_score'] +
         0.2 * recommendations['popularity_norm'] +
@@ -147,5 +147,4 @@ def get_recommendations_with_score_and_rank(anime_id, cosine_sim, df, top_n=10, 
     # Sort by weighted_score
     recommendations = recommendations.sort_values(by='weighted_score', ascending=False)
     
-    # Return top_n recommendations
     return recommendations.head(top_n)
