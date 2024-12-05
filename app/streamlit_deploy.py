@@ -20,7 +20,7 @@ st.title(":tv: Hybrid Anime Recommendation System")
 st.markdown(":cat: [GitHub Repository](https://github.com/tashrifmahmud/Hybrid-Recommender-System)  | :sparkles: [Jikan API](https://jikan.moe/)")
 
 # Banner
-st.image("https://i.imgur.com/IhTFtPw.jpeg", use_column_width=True)
+st.image("https://i.imgur.com/IhTFtPw.jpeg", use_container_width=True)
 
 
 # Sidebar
@@ -53,24 +53,32 @@ def download_file(url, output_path):
 st.info("Initial loading can take a few minutes, thank you for your patience.", icon="ℹ️")
 
 # Load all saved data with caching
-@st.cache_data
+@st.cache_data(show_spinner="Fetching anime and user data...")
 def load_data():
     download_file(file_urls["anime_filtered"], "anime_filtered")
     anime_filtered_df = pd.read_csv("anime_filtered")
 
+    download_file(file_urls["user_clean"], "user_clean")
+    user_clean = pd.read_csv("user_clean")
+
+    return anime_filtered_df, user_clean
+
+@st.cache_resource(show_spinner="Fetching content and collaborative models...")
+def load_data_2():
     download_file(file_urls["cosine_sim"], "cosine_sim")
     cosine_sim = np.load("cosine_sim")
 
     download_file(file_urls["svd_model"], "svd_model")
     svd = joblib.load("svd_model")
 
-    download_file(file_urls["user_clean"], "user_clean")
-    user_clean = pd.read_csv("user_clean")
+    return cosine_sim, svd
 
-    return anime_filtered_df, cosine_sim, svd, user_clean
 
 # Load data
-anime_filtered_df, cosine_sim, svd, user_clean = load_data()
+anime_filtered_df, user_clean = load_data()
+
+# Load data 2
+cosine_sim, svd = load_data_2()
 
 st.success("Data loaded successfully!", icon="✅")
 
@@ -134,7 +142,7 @@ last_request_time = 0
 
 jikan = Jikan()
 
-@st.cache_data
+@st.cache_data(ttl=100)
 def fetch_anime_details_v4(anime_name):
     global last_request_time
     base_url = "https://api.jikan.moe/v4"
@@ -216,7 +224,7 @@ if submit_button:
                 with st.container():
                     col1, col2 = st.columns([1, 3])
                     with col1:
-                        st.image(anime_details['image_url'], use_column_width=True)
+                        st.image(anime_details['image_url'], use_container_width=True)
                     with col2:
                         st.markdown(f"### [{anime_details['title']}]({anime_details['url']})")
                         st.markdown(f"**Score**: {anime_details['score']}")
