@@ -127,6 +127,11 @@ def hybrid_recommendations_for_new_user(new_user_ratings, svd_model, cosine_sim,
     # Combine scores
     hybrid_df = pd.merge(collaborative_df, content_scores, on='anime_id', how='outer').fillna(0)
     hybrid_df['hybrid_score'] = (cf_weight * hybrid_df['cf_score']) + (content_weight * hybrid_df['similarity_score'])
+
+     # Exclude watched anime
+    hybrid_df = hybrid_df[~hybrid_df['anime_id'].isin(watched_anime_ids)]
+
+    # Merge additional anime details
     hybrid_df = pd.merge(hybrid_df, anime_df, on='anime_id')
     hybrid_df = hybrid_df.sort_values(by='hybrid_score', ascending=False).head(top_n)
     return hybrid_df
