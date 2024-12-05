@@ -27,6 +27,7 @@ st.image("https://i.imgur.com/IhTFtPw.jpeg", use_column_width=True)
 with st.sidebar:
     st.header("More about this Project:")
     st.markdown("### :space_invader: Created by: Tashrif Mahmud\n- This Anime Recommendation System combines collaborative and content-based filtering to provide personalized anime suggestions. Explore detailed recommendations with images, scores, and synopses powered by Jikan API.")
+    st.markdown("_FYI: This is the full model version deployable using streamlit local app deployment._")
     st.markdown("### :link: Links:\n- :cat: [GitHub](https://github.com/tashrifmahmud/Hybrid-Recommender-System)\n- :e-mail: [LinkedIn](https://www.linkedin.com/in/tashrifmahmud/)") 
 
 st.info("Initial loading can take a few minutes, thank you for your patience.", icon="ℹ️")
@@ -34,9 +35,9 @@ st.info("Initial loading can take a few minutes, thank you for your patience.", 
 # Load all saved data
 @st.cache_data
 def load_data():
-    anime_filtered_df = pd.read_csv("data/anime_filtered_processed_top.csv")
-    cosine_sim = np.load("data/cosine_sim_reduced_pop.npy")
-    svd = joblib.load("data/svd_model_3_compressed.pkl")
+    anime_filtered_df = pd.read_csv("data/anime_filtered_processed_st.csv")
+    cosine_sim = np.load("data/cosine_sim_reduced.npy")
+    svd = joblib.load("data/svd_model_3.pkl")
     user_clean = pd.read_csv("data/user_clean_processed_2.csv")
     return anime_filtered_df, cosine_sim, svd, user_clean
 
@@ -144,6 +145,7 @@ with st.form("recommendation_form"):
             new_user_ratings.append({'user_id': 0, 'anime_id': anime_id, 'rating': rating})
     submit_button = st.form_submit_button(label="Get Recommendations")
 
+
 if submit_button:
     if len(new_user_ratings) == 0:
         st.write("Please select at least one anime and provide ratings.")
@@ -157,9 +159,28 @@ if submit_button:
             cf_weight=0.4,
             content_weight=0.6
         )
-        diversified_recs = diversify_recommendations_by_keyword(hybrid_recs, column='name', max_per_keyword=2)
+        diversified_recs = diversify_recommendations_by_keyword(hybrid_recs, column='name', max_per_keyword=1)
 
-        st.write("Hybrid Recommendations:")
+        # Select Top 10 Recommendations after diversification
+        top_10_table = diversified_recs[['name', 'genres', 'hybrid_score']].head(10)
+
+        # Double the hybrid_score
+        top_10_table['hybrid_score'] = top_10_table['hybrid_score'] * 2
+
+        # Reset the index to ensure a clean display
+        top_10_table = top_10_table.reset_index(drop=True)
+        top_10_table.index += 1
+
+        # Capitalize the first letter of each word in 'name' and 'genres'
+        top_10_table['name'] = top_10_table['name'].str.title()
+        top_10_table['genres'] = top_10_table['genres'].str.title()
+
+        # Display results in a table
+        st.write("Top 10 Recommendation Summary:")
+        st.table(top_10_table.style.format({"hybrid_score": "{:.2f}"}))
+
+        # Get data from JikanAPI
+        st.subheader("Your Hybrid Recommendations:")
         for _, row in diversified_recs.iterrows():
             anime_details = fetch_anime_details_v4(row['name'])
             if anime_details:
