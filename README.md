@@ -70,4 +70,3 @@ The [Jikan API](https://jikan.moe/) is an Jikan unofficial & open-source API for
 
 ## Links
 :bar_chart: [Streamlit App](https://hybrid-recommender-system.streamlit.app) | :film_strip: [YouTube Video](https://www.youtube.com/watch?v=VUjMEUpg5ec)
-
