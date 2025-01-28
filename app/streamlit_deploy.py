@@ -26,7 +26,7 @@ st.image("https://i.imgur.com/IhTFtPw.jpeg", use_container_width=True)
 # Sidebar
 with st.sidebar:
     st.header("More about this Project:")
-    st.markdown("### This Anime Recommendation System combines collaborative and content-based filtering to provide personalized anime suggestions. Explore detailed recommendations with images, scores, and synopses powered by Jikan API.")
+    st.markdown("#### This Anime Recommendation System combines collaborative and content-based filtering to provide personalized anime suggestions. Explore detailed recommendations with images, scores, and synopses powered by Jikan API.")
     st.markdown("_FYI: This deployment utilizes a streamlined mini version of the model, to optimize processing and accommodate deployment constraints. Try the full model at Github._")
     st.markdown("### :link: Links:\n- :cat: [GitHub](https://github.com/tashrifmahmud/Hybrid-Recommender-System)\n- :e-mail: [LinkedIn](https://www.linkedin.com/in/tashrifmahmud/)") 
     st.markdown(":space_invader: Created by: [Tashrif Mahmud](https://www.linkedin.com/in/tashrifmahmud)")
