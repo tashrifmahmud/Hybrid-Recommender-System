@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # Title
-st.title(":tv: Hybrid Anime Recommendation System")
+st.title(":tv: Hybrid Recommendation System")
 st.markdown(":cat: [GitHub Repository](https://github.com/tashrifmahmud/Hybrid-Recommender-System)  | :sparkles: [Jikan API](https://jikan.moe/)")
 
 # Banner
